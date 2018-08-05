@@ -5,124 +5,169 @@
 #include<vector>
 #include <stdlib.h>
 #include <time.h>
+#include "FBullCowGame.h"
 
-using namespace std;
+/*This is the console executeable that makes use of the BullCowClass 
+This acts as the view in a MVC pattern, and is responsible for all 
+user interaction. For game logic see the FBullCowGame class.
+*/
 
-void PrintIntro(string word);
-void PlayGame(std::string &word);
-pair <int, int> cows_bulls(string x, string y);
-string GetGuess(int counter, string word);
-bool EvalueateAnswer(std::string &word, std::string &guess);
-string GetWord();
+using FText = std::string;
+using int32 = int;
+
+void PrintIntro(FText word);
+void PlayGame(const FText word);
+std::pair <int32, int32> cows_bulls(FText word, FText guess);
+FText GetValidGuess(int32 counter, FText word);
+bool EvalueateAnswer(const FText word, FText &guess);
+FText GetWord();
 bool AskToPlayAgain();
+
+FBullAndCow BCGame;
 
 int main()
 {
-	cout << "BULLS= correct letter at correct place" << endl;
-	cout << "COWS= incorrect letter at incorrect place" << endl;
-	cout << endl;
+
+	std::cout << "BULLS= correct letter at correct place" << std::endl;
+	std::cout << "COWS= incorrect letter at incorrect place" << std::endl;
+	std::cout << std::endl;
 	/*constexpr int WORD_LENGTH = 5;*/
 	bool play = 1;
 	do
 	{
-		string word = GetWord();
-		PrintIntro(word);
-		PlayGame(word);
+		FText word = GetWord();
+		PrintIntro(BCGame.GetHiddenWord());
+		//PrintIntro(word);
+		PlayGame(BCGame.GetHiddenWord());
+		//PlayGame(word);
 		play = AskToPlayAgain();
 	} while (play);
 }
 
-void PlayGame(std::string &word)
+void PlayGame(const FText word)
 {
-	int counter = 5;
-	string guess="";
+	BCGame.Reset();
+	int32 MaxTries = BCGame.GetMaxTries();
+	FText guess="";
 	do
 	{
-		guess = GetGuess(counter, word);
-		if(EvalueateAnswer(word,guess))
+		guess = GetValidGuess(MaxTries, word);
+		//FBullCowCount BullCowCount = BCGame.SubmitGuess(guess);
+
+		if(EvalueateAnswer(word,guess))//TODO check valid guesses
 			return;
-		cout << endl;
-		counter--;
+		std::cout << std::endl;
+		MaxTries--;
 	} 
-	while (counter> 0);
-	cout << "You Lose" << endl;
+	while (MaxTries> 0);
+	std::cout << "You Lose" << std::endl;
+	
+	//TODO sumarise game 
+
 	return;
+
 }
 
-void PrintIntro(string word)
+void PrintIntro(FText word)
 {
-	cout << "Welcome to Bulls and Cows, a fun word game" << endl;
-	cout << "Can you guess the " << word.length() << " letters isogram word" << endl;
+	std::cout << "Welcome to Bulls and Cows, a fun word game" << std::endl;
+	std::cout << "Can you guess the " << word.length() << " letters isogram word" << std::endl;
+	//std::cout << "Can you guess the " << BCGame.GetHiddenWordLength() << " letters isogram word" << std::endl;
 }
 
-string GetWord()
+FText GetWord()
 {
-	vector<string> library{ "slide","slid", "slurp", "curse", "slope" };
+	std::vector<FText> library{ "slide","slid", "slurp", "curse", "slope" };
 	srand(time(NULL));
-	int index = rand() % library.size();
+	int32 index = rand() % library.size();
 	return library[index];
 }
 
 bool AskToPlayAgain()
 {
-	cout << "Say YES if you want to play again" << endl;
-	cout << "NO if you wish to exit" << endl;
-	string in = "";
-	getline(cin, in);
+	std::cout << "Say YES if you want to play again" << std::endl;
+	std::cout << "NO if you wish to exit" << std::endl;
+	FText in = "";
+	std::getline(std::cin, in);
 	if (in == "YES")
 		return true;
 	else if (in == "NO")
 		return false;
 	else
 	{
-		cout << "invalid command" << endl;
+		std::cout << "invalid command" << std::endl;
 		return AskToPlayAgain();
 	}
 }
 
-pair <int, int> cows_bulls(string x, string y)
+std::pair <int32, int32> cows_bulls(FText word, FText guess)
 {
-	pair<int, int> result(0, 0);
-	if (x.length() != y.length())
+	std::pair<int32, int32> result(0, 0);
+	if (word.length() != guess.length())
 	{
-		for (unsigned int i = 0; i < min(x.length(), y.length()); i++)
+		for (int32 i = 0; i < std::max(word.length(), guess.length()); i++)
 		{
-			if (x[i] == y[i])
-				result.first++;
-			else
-				result.second++;
+			if (i < word.length() && i < guess.length())
+			{
+				if (word[i] == guess[i])
+					result.first++;
+				else if (word.find(guess[i]) >= 0 && word.find(guess[i])< word.length())
+					result.second++;
+			}
 		}
-		if (x.length()> y.length())
-			result.second += abs(int(x.length() - y.length()));
 	}
 	else
 	{
-		for (unsigned int i = 0; i < x.length(); i++)
+		for (int32 i = 0; i < word.length(); i++)
 		{
-			if (x[i] == y[i])
+			if (word[i] == guess[i])
 				result.first++;
-			else
+			else if (word.find(guess[i]) >= 0 && word.find(guess[i])< word.length())
 				result.second++;
 		}
 	}
 	return result;
 }
 
-string GetGuess(int counter, string word)
+//loop continiuly until the user gives a valid guess 
+FText GetValidGuess(int32 counter, FText word)
 {
-	string g;
-	cout << endl;
-	cout << "show your guess: " << counter << endl;
-	cout << "length of word= " << word.length() << endl;
-	getline(cin, g);
-	cout << "Your Guess was: " << g << endl;
+	FText g;
+	EGuessStatus Status = EGuessStatus::Invalid_Status;
+	do
+	{
+		std::cout << std::endl;
+		std::cout << "Tries left " << counter << std::endl;
+		std::cout << "Try " << counter << ". Enter Your Guess: " << std::endl;
+		std::cout << "length of word= " << word.length() << std::endl;
+		std::getline(std::cin, g);
+		Status = BCGame.CheckGuessValidity(g);
+		switch (Status)
+		{
+		case EGuessStatus::Wrong_Length:
+			std::cout << "Please enter a " << BCGame.GetHiddenWordLength() << " letter word." << std::endl;
+			break;
+		case EGuessStatus::Not_Isogram:
+			std::cout << "Please enter word without repeating letter" << std::endl;
+			break;
+		case EGuessStatus::Not_LowerCase:
+			std::cout << "Please enter lowercase letters only" << std::endl;
+			break;
+		default:
+			Status = EGuessStatus::OK;
+			std::cout << "Your Guess was: " << g << std::endl;
+		}
+		std::cout << std::endl;
+	}
+	while (Status != EGuessStatus::OK);
 	return g;
 }
 
-bool EvalueateAnswer(std::string &word, std::string &guess)
+bool EvalueateAnswer(const FText word, FText &guess)
 {
-	pair<int, int> res = cows_bulls(word, guess);
-	cout << "Bulls= " << res.first << ", " << "Cows= " << res.second << endl;
-	if (res.second == 0) { cout << "You Win" << endl; return 1; }
+	std::pair<int32, int32> res = cows_bulls(word, guess);
+	std::cout << "Bulls= " << res.first << ", " << "Cows= " << res.second << std::endl;
+	if (res.first == word.length()) { std::cout << "You Win" << std::endl; return 1; }
 	return 0;
 }
+	
