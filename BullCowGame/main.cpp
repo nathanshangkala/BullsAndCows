@@ -47,20 +47,25 @@ int main()
 void PlayGame(const FText word)
 {
 	BCGame.Reset();
+	int32 attempt = BCGame.GetMaxTries();
 	int32 MaxTries = BCGame.GetMaxTries();
 	FText guess="";
+	
+	//loop asking for guesses
+	//when the game is NOT won and there are still tries remaining
 	do
 	{
-		guess = GetValidGuess(MaxTries, word);
+		//std::cout << BCGame.GetCurrentTry() << std::endl;
+		guess = GetValidGuess(attempt, word);
 		//FBullCowCount BullCowCount = BCGame.
 		(guess);
 
 		if(EvalueateAnswer(word,guess))//TODO check valid guesses
 			return;
 		std::cout << std::endl;
-		MaxTries--;
+		attempt--;
 	} 
-	while (MaxTries> 0);
+	while (!BCGame.IsGameWon() && BCGame.GetCurrentTry() <= MaxTries);
 	std::cout << "You Lose" << std::endl;
 	
 	//TODO sumarise game 
@@ -139,24 +144,24 @@ FText GetValidGuess(int32 counter, FText word)
 	{
 		std::cout << std::endl;
 		std::cout << "Tries left " << counter << std::endl;
-		std::cout << "Try " << counter << ". Enter Your Guess: " << std::endl;
-		std::cout << "length of word= " << word.length() << std::endl;
+		std::cout << "Try " << BCGame.GetCurrentTry() << ". Enter Your Guess: ";
 		std::getline(std::cin, g);
+		std::cout << "length of word= " << word.length() << std::endl;
 		Status = BCGame.CheckGuessValidity(g);
 		switch (Status)
 		{
 		case EGuessStatus::Wrong_Length:
-			std::cout << "Please enter a " << BCGame.GetHiddenWordLength() << " letter word." << std::endl;
+			std::cout << "\nPlease enter a " << BCGame.GetHiddenWordLength() << " letter word: ";
 			break;
 		case EGuessStatus::Not_Isogram:
-			std::cout << "Please enter word without repeating letter" << std::endl;
+			std::cout << "\nPlease enter word without repeating letter: ";
 			break;
 		case EGuessStatus::Not_LowerCase:
-			std::cout << "Please enter lowercase letters only" << std::endl;
+			std::cout << "\nPlease enter lowercase letters only: ";
 			break;
 		default:
 			Status = EGuessStatus::OK;
-			std::cout << "Your Guess was: " << g << std::endl;
+			std::cout << "Your Guess was: " << g << std::endl;;
 			break;
 		}
 		std::cout << std::endl;

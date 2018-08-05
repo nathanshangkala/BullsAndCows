@@ -5,31 +5,27 @@
 using FString = std::string;
 using int32 = int;
 
+//Try getter
 int32 FBullAndCow::GetMaxTries()const {return MyMaxTries;}
 int32 FBullAndCow::GetCurrentTry()const {return MyCurrentTry;}
-int32 FBullAndCow::GetHiddenWordLength() const {return int32(MyHiddenWord.length());}
 
-FString FBullAndCow::GetHiddenWord() const
-{
-	return MyHiddenWord;
-}
+//Word getter
+int32 FBullAndCow::GetHiddenWordLength() const {return int32(MyHiddenWord.length());}
+FString FBullAndCow::GetHiddenWord() const { return MyHiddenWord; }
 
 FBullAndCow::FBullAndCow() {Reset();}
+bool FBullAndCow::IsGameWon() const { return bIsGameWon; }
 
 void FBullAndCow::Reset()
 {
 	constexpr int32 MAX_TRIES = 8;
 	const FString HIDDEN_WORD = "planet";
 
-	MyCurrentTry = MAX_TRIES;
+	MyCurrentTry = 1;
 	MyHiddenWord = HIDDEN_WORD;
-	MyMaxTries = 8;
+	bIsGameWon = false;
+	MyMaxTries = MAX_TRIES;
 	return;
-}
-
-bool FBullAndCow::IsGameWon() const
-{
-	return false;
 }
 
 EGuessStatus FBullAndCow::CheckGuessValidity(FString x) const
@@ -71,5 +67,9 @@ FBullCowCount FBullAndCow::SubmitValidGuess(FString Guess)
 	//		}
 	//	}
 	//}
+	if (BullCowCount.Bulls == WordLength)
+		bIsGameWon = true;
+	else
+		bIsGameWon = false;
 	return BullCowCount;
 }
