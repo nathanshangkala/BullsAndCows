@@ -35,7 +35,7 @@ class FBullAndCow
 		
 		FBullAndCow();
 		void Reset();
-		FBullCowCount SubmitGuess(FString Guess);
+		FBullCowCount SubmitValidGuess(FString Guess);
 
 	private:
 		int32 MyCurrentTry;

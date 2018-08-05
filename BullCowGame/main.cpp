@@ -17,7 +17,7 @@ using int32 = int;
 
 void PrintIntro(FText word);
 void PlayGame(const FText word);
-std::pair <int32, int32> cows_bulls(FText word, FText guess);
+//std::pair <int32, int32> cows_bulls(FText word, FText guess);
 FText GetValidGuess(int32 counter, FText word);
 bool EvalueateAnswer(const FText word, FText &guess);
 FText GetWord();
@@ -52,7 +52,8 @@ void PlayGame(const FText word)
 	do
 	{
 		guess = GetValidGuess(MaxTries, word);
-		//FBullCowCount BullCowCount = BCGame.SubmitGuess(guess);
+		//FBullCowCount BullCowCount = BCGame.
+		(guess);
 
 		if(EvalueateAnswer(word,guess))//TODO check valid guesses
 			return;
@@ -100,34 +101,34 @@ bool AskToPlayAgain()
 	}
 }
 
-std::pair <int32, int32> cows_bulls(FText word, FText guess)
-{
-	std::pair<int32, int32> result(0, 0);
-	if (word.length() != guess.length())
-	{
-		for (int32 i = 0; i < std::max(word.length(), guess.length()); i++)
-		{
-			if (i < word.length() && i < guess.length())
-			{
-				if (word[i] == guess[i])
-					result.first++;
-				else if (word.find(guess[i]) >= 0 && word.find(guess[i])< word.length())
-					result.second++;
-			}
-		}
-	}
-	else
-	{
-		for (int32 i = 0; i < word.length(); i++)
-		{
-			if (word[i] == guess[i])
-				result.first++;
-			else if (word.find(guess[i]) >= 0 && word.find(guess[i])< word.length())
-				result.second++;
-		}
-	}
-	return result;
-}
+//std::pair <int32, int32> cows_bulls(FText word, FText guess)
+//{
+//	std::pair<int32, int32> result(0, 0);
+//	if (word.length() != guess.length())
+//	{
+//		for (int32 i = 0; i < std::max(word.length(), guess.length()); i++)
+//		{
+//			if (i < word.length() && i < guess.length())
+//			{
+//				if (word[i] == guess[i])
+//					result.first++;
+//				else if (word.find(guess[i]) >= 0 && word.find(guess[i])< word.length())
+//					result.second++;
+//			}
+//		}
+//	}
+//	else
+//	{
+//		for (int32 i = 0; i < word.length(); i++)
+//		{
+//			if (word[i] == guess[i])
+//				result.first++;
+//			else if (word.find(guess[i]) >= 0 && word.find(guess[i])< word.length())
+//				result.second++;
+//		}
+//	}
+//	return result;
+//}
 
 //loop continiuly until the user gives a valid guess 
 FText GetValidGuess(int32 counter, FText word)
@@ -156,6 +157,7 @@ FText GetValidGuess(int32 counter, FText word)
 		default:
 			Status = EGuessStatus::OK;
 			std::cout << "Your Guess was: " << g << std::endl;
+			break;
 		}
 		std::cout << std::endl;
 	}
@@ -165,9 +167,10 @@ FText GetValidGuess(int32 counter, FText word)
 
 bool EvalueateAnswer(const FText word, FText &guess)
 {
-	std::pair<int32, int32> res = cows_bulls(word, guess);
-	std::cout << "Bulls= " << res.first << ", " << "Cows= " << res.second << std::endl;
-	if (res.first == word.length()) { std::cout << "You Win" << std::endl; return 1; }
+	FBullCowCount res = BCGame.SubmitValidGuess(guess);
+	//std::pair<int32, int32> res = cows_bulls(word, guess);
+	std::cout << "Bulls= " << res.Bulls << ", " << "Cows= " << res.Cows << std::endl;
+	if (res.Bulls == word.length()) { std::cout << "You Win" << std::endl; return 1; }
 	return 0;
 }
 	
