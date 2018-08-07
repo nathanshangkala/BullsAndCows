@@ -16,6 +16,7 @@ using FText = std::string;
 using int32 = int;
 
 void PrintIntro(FText word);
+void PrintGameSummary();
 void PlayGame(const FText word);
 //std::pair <int32, int32> cows_bulls(FText word, FText guess);
 FText GetValidGuess(int32 counter, FText word);
@@ -69,7 +70,7 @@ void PlayGame(const FText word)
 	std::cout << "You Lose" << std::endl;
 	
 	//TODO sumarise game 
-
+	PrintGameSummary();
 	return;
 
 }
@@ -79,6 +80,14 @@ void PrintIntro(FText word)
 	std::cout << "Welcome to Bulls and Cows, a fun word game" << std::endl;
 	std::cout << "Can you guess the " << word.length() << " letters isogram word" << std::endl;
 	//std::cout << "Can you guess the " << BCGame.GetHiddenWordLength() << " letters isogram word" << std::endl;
+}
+
+void PrintGameSummary()
+{
+	if(BCGame.IsGameWon())
+		std::cout << "WELL DONE. YOU WIN. " << std::endl;
+	else
+		std::cout << "Better Luck Next time" << std::endl;
 }
 
 FText GetWord()
@@ -91,7 +100,7 @@ FText GetWord()
 
 bool AskToPlayAgain()
 {
-	std::cout << "Say YES if you want to play again" << std::endl;
+	std::cout << "Say YES if you want to play again with the same hidden word? " << std::endl;
 	std::cout << "NO if you wish to exit" << std::endl;
 	FText in = "";
 	std::getline(std::cin, in);

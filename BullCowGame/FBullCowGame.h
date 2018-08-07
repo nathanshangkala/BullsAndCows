@@ -38,6 +38,7 @@ class FBullAndCow
 		FBullCowCount SubmitValidGuess(FString Guess);
 
 	private:
+		bool IsIsogram(FString Guess)const;
 		bool bIsGameWon;
 		int32 MyCurrentTry;
 		int32 MyMaxTries;

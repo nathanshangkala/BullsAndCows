@@ -1,6 +1,8 @@
 #include "FBullCowGame.h"
 #include<iostream>
 #include<string>
+#include<map>
+#define TMap std::map
 
 using FString = std::string;
 using int32 = int;
@@ -18,7 +20,7 @@ bool FBullAndCow::IsGameWon() const { return bIsGameWon; }
 
 void FBullAndCow::Reset()
 {
-	constexpr int32 MAX_TRIES = 8;
+	constexpr int32 MAX_TRIES = 3;
 	const FString HIDDEN_WORD = "planet";
 
 	MyCurrentTry = 1;
@@ -28,15 +30,15 @@ void FBullAndCow::Reset()
 	return;
 }
 
-EGuessStatus FBullAndCow::CheckGuessValidity(FString x) const
+EGuessStatus FBullAndCow::CheckGuessValidity(FString guess) const
 {
 	//Not Isogram
-	if (false)
+	if (!IsIsogram(guess))
 		return EGuessStatus::Not_Isogram;
 	//Not Lowecase
 	else if (false)
 		return EGuessStatus::Not_LowerCase;
-	else if (x.length()!= GetHiddenWordLength())
+	else if (guess.length()!= GetHiddenWordLength())
 		return EGuessStatus::Wrong_Length;
 	else
 		return EGuessStatus::OK;
@@ -72,4 +74,19 @@ FBullCowCount FBullAndCow::SubmitValidGuess(FString Guess)
 	else
 		bIsGameWon = false;
 	return BullCowCount;
+}
+
+bool FBullAndCow::IsIsogram(FString Word)const
+{
+	if (Word.length() <= 1) return true;
+	TMap<char, bool> LetterSeen;
+	for (char Letter : Word)
+	{
+		Letter = tolower(Letter);
+		if (LetterSeen[Letter])
+			return false;
+		else
+			LetterSeen[Letter] = true;
+	}
+	return true;
 }
