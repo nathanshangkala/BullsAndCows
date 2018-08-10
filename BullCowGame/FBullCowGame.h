@@ -3,6 +3,7 @@
 #define BULL_COW_H
 
 #include <string>
+#include <vector>
 
 using FString = std::string;
 using int32 = int;
@@ -30,6 +31,7 @@ class FBullAndCow
 		int32 GetCurrentTry()const;
 		int32 GetHiddenWordLength()const;
 		FString GetHiddenWord()const;
+		FString GetWord()const;
 		bool IsGameWon() const ;
 		EGuessStatus CheckGuessValidity(FString x)const;
 		
@@ -38,6 +40,7 @@ class FBullAndCow
 		FBullCowCount SubmitValidGuess(FString Guess);
 
 	private:
+		std::vector<FString> library;
 		bool IsLowercase(FString Guess) const;
 		bool IsIsogram(FString Guess)const;
 		bool bIsGameWon;

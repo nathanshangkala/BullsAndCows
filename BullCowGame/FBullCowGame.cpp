@@ -2,6 +2,8 @@
 #include<iostream>
 #include<string>
 #include<map>
+#include <stdlib.h>
+#include <time.h>
 #define TMap std::map
 
 using FString = std::string;
@@ -15,13 +17,23 @@ int32 FBullAndCow::GetCurrentTry()const {return MyCurrentTry;}
 int32 FBullAndCow::GetHiddenWordLength() const {return int32(MyHiddenWord.length());}
 FString FBullAndCow::GetHiddenWord() const { return MyHiddenWord; }
 
+FString FBullAndCow::GetWord() const
+{
+	srand(time(NULL));
+	int32 index = rand() % library.size();
+	return library[index];
+}
+
 FBullAndCow::FBullAndCow() {Reset();}
 bool FBullAndCow::IsGameWon() const { return bIsGameWon; }
 
 void FBullAndCow::Reset()
 {
 	constexpr int32 MAX_TRIES = 3;
-	const FString HIDDEN_WORD = "planet";
+	//TODO Get a more sophisticated way of generating random words
+	//TODO Maybe apply difficulty to it to -> more difficult then harder words
+	library.push_back("planet");
+	const FString HIDDEN_WORD = GetWord();
 
 	MyCurrentTry = 1;
 	MyHiddenWord = HIDDEN_WORD;
