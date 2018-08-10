@@ -38,6 +38,7 @@ class FBullAndCow
 		FBullCowCount SubmitValidGuess(FString Guess);
 
 	private:
+		bool IsLowercase(FString Guess) const;
 		bool IsIsogram(FString Guess)const;
 		bool bIsGameWon;
 		int32 MyCurrentTry;

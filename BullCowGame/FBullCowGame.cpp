@@ -36,7 +36,7 @@ EGuessStatus FBullAndCow::CheckGuessValidity(FString guess) const
 	if (!IsIsogram(guess))
 		return EGuessStatus::Not_Isogram;
 	//Not Lowecase
-	else if (false)
+	else if (!IsLowercase(guess))
 		return EGuessStatus::Not_LowerCase;
 	else if (guess.length()!= GetHiddenWordLength())
 		return EGuessStatus::Wrong_Length;
@@ -74,6 +74,19 @@ FBullCowCount FBullAndCow::SubmitValidGuess(FString Guess)
 	else
 		bIsGameWon = false;
 	return BullCowCount;
+}
+
+bool FBullAndCow::IsLowercase(FString Guess) const
+{
+	bool lowercase = true;
+	for (auto Letter : Guess)
+	{
+		//if (Letter == '\0' || Letter == ' ')
+		//	lowercase = true;
+		if (!islower(Letter))
+			return false;
+	}
+	return true;
 }
 
 bool FBullAndCow::IsIsogram(FString Word)const
