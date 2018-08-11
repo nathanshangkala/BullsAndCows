@@ -1,3 +1,6 @@
+/*The game logic (no view code or direct user interaction)
+The game is a simple word guessing game based on Mastermind*/
+
 #pragma once
 #ifndef BULL_COW_H
 #define BULL_COW_H
