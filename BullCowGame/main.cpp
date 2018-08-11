@@ -1,3 +1,4 @@
+#pragma once
 #include<iostream>
 #include<string>
 #include<algorithm>
@@ -61,7 +62,6 @@ void PlayGame(const FText word)
 	while (!BCGame.IsGameWon() && BCGame.GetCurrentTry() <= MaxTries);
 	std::cout << "You Lose" << std::endl;
 	
-	//TODO sumarise game 
 	PrintGameSummary();
 	return;
 
@@ -76,8 +76,6 @@ void PrintIntro(FText word)
 	std::cout << "  / | BULL |O            O| COW  | \\ " << std::endl;
 	std::cout << " *  |-,--- |              |------|  * " << std::endl;
 	std::cout << "    ^      ^              ^      ^ " << std::endl << std::endl;
-	//std::cout << "Choose a difficulty: easy / medium / hard" << std::endl;
-	//std::cout << "Can you guess the " << BCGame.GetHiddenWordLength() << " letters isogram word" << std::endl;
 }
 
 void PrintGameSummary()
@@ -88,10 +86,6 @@ void PrintGameSummary()
 		std::cout << "Better Luck Next time" << std::endl;
 }
 
-//FText GetWord()
-//{
-//	std::vector<FText> library{ "slide","slid", "slurp", "curse", "slope" };
-//}
 
 bool AskToPlayAgain()
 {

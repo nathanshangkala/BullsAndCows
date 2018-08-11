@@ -1,3 +1,4 @@
+#pragma once
 #include "FBullCowGame.h"
 #include<iostream>
 #include<string>
@@ -39,11 +40,6 @@ bool FBullAndCow::IsGameWon() const { return bIsGameWon; }
 
 void FBullAndCow::Reset()
 {
-	//constexpr int32 MAX_TRIES = 3;
-	//library.push_back("planet");
-	//const FString HIDDEN_WORD = GetWord();
-	//MyHiddenWord = HIDDEN_WORD;
-	//MyMaxTries = MAX_TRIES;
 	MyCurrentTry = 1;
 	bIsGameWon = false;
 	return;
@@ -68,6 +64,7 @@ void FBullAndCow::SetDifficulty()
 	std::cout << "Choose a difficulty: easy / medium / hard" << std::endl;
 	FString filename = "";
 	FString difficulty = "";
+	//get player choice of difficulty setting
 	std::getline(std::cin, difficulty);
 	if (difficulty == "easy")
 		filename = "easy.txt";
@@ -107,19 +104,6 @@ FBullCowCount FBullAndCow::SubmitValidGuess(FString Guess)
 		else if (MyHiddenWord.find(Guess[i]) >= 0 && MyHiddenWord.find(Guess[i])< WordLength)
 			BullCowCount.Cows++;
 	}
-	//for (int32 MHWChar = 0; MHWChar< WordLength; MHWChar++)
-	//{
-	//	for (int32 GChar= 0; GChar< WordLength; GChar++)
-	//	{
-	//		if (MyHiddenWord[MHWChar] == Guess[GChar])
-	//		{
-	//			if (MHWChar == GChar)
-	//				BullCowCount.Bulls++;
-	//			else
-	//				BullCowCount.Cows++;
-	//		}
-	//	}
-	//}
 	if (BullCowCount.Bulls == WordLength)
 		bIsGameWon = true;
 	else
@@ -132,8 +116,6 @@ bool FBullAndCow::IsLowercase(FString Guess) const
 	bool lowercase = true;
 	for (auto Letter : Guess)
 	{
-		//if (Letter == '\0' || Letter == ' ')
-		//	lowercase = true;
 		if (!islower(Letter))
 			return false;
 	}
