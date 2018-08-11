@@ -11,13 +11,22 @@
 using FString = std::string;
 using int32 = int;
 
+FBullAndCow::FBullAndCow() { Reset();} //Default Constructor
+
 //Try getter
-int32 FBullAndCow::GetMaxTries()const {return MyMaxTries;}
 int32 FBullAndCow::GetCurrentTry()const {return MyCurrentTry;}
 
 //Word getter
 int32 FBullAndCow::GetHiddenWordLength() const {return int32(MyHiddenWord.length());}
 FString FBullAndCow::GetHiddenWord() const { return MyHiddenWord; }
+
+int32 FBullAndCow::GetMaxTries()const 
+{
+	TMap<int32, int32> WordLengthToMaxTries{{3,4},{4,7}, {5,10}, {6,16}, {7,20}};
+	return WordLengthToMaxTries[MyHiddenWord.length()]; 
+}
+
+
 
 FString FBullAndCow::GetWord() const
 {
@@ -26,21 +35,17 @@ FString FBullAndCow::GetWord() const
 	return library[index];
 }
 
-FBullAndCow::FBullAndCow() {Reset();}
 bool FBullAndCow::IsGameWon() const { return bIsGameWon; }
 
 void FBullAndCow::Reset()
 {
-	constexpr int32 MAX_TRIES = 3;
-	
+	//constexpr int32 MAX_TRIES = 3;
 	//library.push_back("planet");
-	
 	//const FString HIDDEN_WORD = GetWord();
-
-	MyCurrentTry = 1;
 	//MyHiddenWord = HIDDEN_WORD;
+	//MyMaxTries = MAX_TRIES;
+	MyCurrentTry = 1;
 	bIsGameWon = false;
-	MyMaxTries = MAX_TRIES;
 	return;
 }
 
