@@ -35,6 +35,8 @@ class FBullAndCow
 		bool IsGameWon() const ;
 		EGuessStatus CheckGuessValidity(FString x)const;
 		
+		void SetDifficulty();
+
 		FBullAndCow();
 		void Reset();
 		FBullCowCount SubmitValidGuess(FString Guess);

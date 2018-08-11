@@ -3,6 +3,8 @@
 #include<string>
 #include<map>
 #include <stdlib.h>
+#include <fstream>
+#include <sstream>
 #include <time.h>
 #define TMap std::map
 
@@ -30,13 +32,13 @@ bool FBullAndCow::IsGameWon() const { return bIsGameWon; }
 void FBullAndCow::Reset()
 {
 	constexpr int32 MAX_TRIES = 3;
-	//TODO Get a more sophisticated way of generating random words
-	//TODO Maybe apply difficulty to it to -> more difficult then harder words
-	library.push_back("planet");
-	const FString HIDDEN_WORD = GetWord();
+	
+	//library.push_back("planet");
+	
+	//const FString HIDDEN_WORD = GetWord();
 
 	MyCurrentTry = 1;
-	MyHiddenWord = HIDDEN_WORD;
+	//MyHiddenWord = HIDDEN_WORD;
 	bIsGameWon = false;
 	MyMaxTries = MAX_TRIES;
 	return;
@@ -54,6 +56,38 @@ EGuessStatus FBullAndCow::CheckGuessValidity(FString guess) const
 		return EGuessStatus::Wrong_Length;
 	else
 		return EGuessStatus::OK;
+}
+
+void FBullAndCow::SetDifficulty() 
+{
+	std::cout << "Choose a difficulty: easy / medium / hard" << std::endl;
+	FString filename = "";
+	FString difficulty = "";
+	std::getline(std::cin, difficulty);
+	if (difficulty == "easy")
+		filename = "easy.txt";
+	else if (difficulty == "medium")
+		filename = "medium.txt";
+	else if (difficulty == "hard")
+		filename = "hard.txt";
+	
+	std::ifstream input(filename);
+
+	FString line;
+	while (std::getline(input, line))
+	{
+		std::stringstream ss;
+		ss << line;
+		while (ss)
+		{
+			FString temp;
+			ss >> temp;
+			if (temp.length() > 0)
+				library.push_back(temp);
+		}
+	}
+	MyHiddenWord = GetWord();
+	std::cout << "Can you guess the " << MyHiddenWord.length() << " letters isogram word" << std::endl;
 }
 
 FBullCowCount FBullAndCow::SubmitValidGuess(FString Guess)

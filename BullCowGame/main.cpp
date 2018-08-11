@@ -26,7 +26,6 @@ FBullAndCow BCGame;
 
 int main()
 {
-
 	std::cout << "BULLS= correct letter at correct place" << std::endl;
 	std::cout << "COWS= incorrect letter at incorrect place" << std::endl;
 	std::cout << std::endl;
@@ -34,6 +33,7 @@ int main()
 	do
 	{
 		PrintIntro(BCGame.GetHiddenWord());
+		BCGame.SetDifficulty();
 		PlayGame(BCGame.GetHiddenWord());
 		play = AskToPlayAgain();
 	} while (play);
@@ -76,7 +76,7 @@ void PrintIntro(FText word)
 	std::cout << "  / | BULL |O            O| COW  | \\ " << std::endl;
 	std::cout << " *  |-,--- |              |------|  * " << std::endl;
 	std::cout << "    ^      ^              ^      ^ " << std::endl << std::endl;
-	std::cout << "Can you guess the " << word.length() << " letters isogram word" << std::endl;
+	//std::cout << "Choose a difficulty: easy / medium / hard" << std::endl;
 	//std::cout << "Can you guess the " << BCGame.GetHiddenWordLength() << " letters isogram word" << std::endl;
 }
 
